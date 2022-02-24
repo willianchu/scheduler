@@ -4,21 +4,25 @@ import "components/InterviewerListItem.scss";
 import classNames from "classnames";
 
 export default function InterviewerListItem(props) {
+  const {name, avatar, selected, setInterviewer} = props;
 
   const interviewerClass = classNames("Interviewers__item", {
-  "interviewers__item--selected": props.selected,
+  "interviewers__item--selected": selected,
  });
-  
+
+ console.log(name);
     
   return (
     <li className={interviewerClass} 
-    onClick={() => props.setInterviewer(props.id)}>
+    // refactoring call function inside de property
+    // onClick={() => props.setInterviewer(props.id)}>
+    onClick={setInterviewer}>
       <img
         className="interviewers__item-image"
-        src={props.avatar}
-        alt={props.name}
+        src={avatar}
+        alt={name}
       />
-      {props.selected && props.name}
+      {selected && name}
     </li>
   );
   
