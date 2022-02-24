@@ -2,8 +2,8 @@ import React from "react";
 import InterviewerListItem from"components/InterviewerListItem";
 
 export default function InterviewerList(props){
-
-  const interviewers = props.interviewers.map((interviewer) => {
+  const data = props.interviewers || []; //props.interviewers is an array of objects
+  const interviewers = data.map((interviewer) => {
     return (
       <InterviewerListItem
         key={interviewer.id}
