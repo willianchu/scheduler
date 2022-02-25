@@ -57,7 +57,7 @@ useEffect(() => {
   });
 });
 
-  const [days, setDays] = useState(mockDays);
+  const [days, setDays] = useState([]);
   
   const [day, setDay] = useState("Monday");
 

@@ -27,7 +27,6 @@ const showAppointment = () => {
         </Fragment>
       );
   } else {
-    console.log()
       return (
         <Fragment>
         <Header time={props.time} />
