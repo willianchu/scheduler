@@ -13,4 +13,14 @@ export function getAppointmentsForDay (state, day) {
   }
   const result = appointmentsArray.map(appointment => appointments[appointment]);
   return result;
+};
+
+export function getInterview (state, interview) {
+  const interviewers = {...state.interviewers};
+  const schedule = {...interview};
+  return (!schedule.interviewer) ? null : {
+    student: schedule.student,
+    interviewer: (schedule.interviewer===null ? null : interviewers[schedule.interviewer])
+  }
 }
+

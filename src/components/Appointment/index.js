@@ -19,7 +19,7 @@ const showAppointment = () => {
         <Empty />
       </Fragment>
       );
-  } else if (props.interview === undefined) {
+  } else if (student === undefined) { // if student is undefined
       return (
         <Fragment>
         <Header time={props.time} />
