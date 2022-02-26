@@ -95,6 +95,7 @@ const schedule = dailyAppointments.map((appointment) => {
       id={appointment.id}
       time={appointment.time}
       interview={interview}
+      interviewers={state.interviewers}
     />
   );
 });
