@@ -45,45 +45,37 @@ const defaultAppointments = [
 ];
 
 const useAxios = () => {
-
+  const [error, setError] = useState(null);
   const [state, setState] = useState({ // set default state
     day: "Monday",
     days: [],
     appointments: defaultAppointments,
     interviewers: []
     });
-  const [error, setError] = useState(null);
-
   const setDay = day => setState( prev => ({...prev, day }));
-// const setDays = days => setState(prev => ({ ...prev, days })); it comes a new one
-// const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
   const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
 
-useEffect(() => {
-const first_endpoint = "http://localhost:8001/api/days";
-const second_endpoint = "http://localhost:8001/api/appointments";
-const third_endpoint = "http://localhost:8001/api/interviewers";
-
-  Promise.all([
-    axios.get(first_endpoint), // get_days
-    axios.get(second_endpoint), // get_appointments
-    axios.get(third_endpoint) // get_interviewers
-  ])
-  .then((all) => {
-    setError(null);
-    const days = all[0].data;
-    const appointments = all[1].data;
-    const interviewers = all[2].data;
-    setAllData([...days], {...appointments}, {...interviewers});
-  })
-  .catch(err => {
-    setError(err.message);
-  });
-    
-},[]);
-
-return {state, setDay, error};
-
-};
+  useEffect(() => {
+    const first_endpoint = "http://localhost:8001/api/days";
+    const second_endpoint = "http://localhost:8001/api/appointments";
+    const third_endpoint = "http://localhost:8001/api/interviewers";
+      Promise.all([
+        axios.get(first_endpoint), // get_days
+        axios.get(second_endpoint), // get_appointments
+        axios.get(third_endpoint) // get_interviewers
+      ])
+      .then((all) => {
+        setError(null);
+        const days = all[0].data;
+        const appointments = all[1].data;
+        const interviewers = all[2].data;
+        setAllData([...days], {...appointments}, {...interviewers});
+      })
+      .catch(err => {
+        setError(err.message);
+      });
+    },[]);
+    return {state, setDay, error};
+  };
 
 export default useAxios;

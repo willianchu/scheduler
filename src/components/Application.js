@@ -7,30 +7,24 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-const {state, setDay, error} = useAxios();
+  const {state, setDay, error} = useAxios(); // data from the server
+  console.log(error); // future error handling
 
-const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const dailyAppointments = getAppointmentsForDay(state, state.day); 
 
-
-const schedule = dailyAppointments.map((appointment) => {
-
-  const interview = getInterview(state, appointment.interview);
-  
-  const todaysInterviewers = getInterviewersForDay (state, state.day);
-  
-
-  return (
-    <Appointment
-      key={appointment.id}
-      id={appointment.id}
-      time={appointment.time}
-      interview={interview}
-      interviewers={todaysInterviewers}
-    />
-  );
-});
-
- 
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+    const todaysInterviewers = getInterviewersForDay (state, state.day);
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={todaysInterviewers}
+      />
+    );
+  });
   return (
     <main className="layout">
       <section className="sidebar">
