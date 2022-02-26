@@ -17,12 +17,14 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-const showAppointment = () => {
-    const interview = {...props.interview}; // copy interview object
-    const student = interview.student; // get student name
-    const interviewer = {...interview.interviewer}; // copy interviewer object
+  const showAppointment = () => {
+  const interview = {...props.interview}; // copy interview object
+  const student = interview.student; // get student name
+  const interviewer = {...interview.interviewer}; // copy interviewer object
+  const interviewersArray = [...props.interviewers]; // copy interviewers array
      // transform interviewers props object to array
-    const interviewers = Object.values(props.interviewers).map(interviewer => {
+    console.log("show",interviewersArray);
+    const interviewers = Object.values(interviewersArray).map(interviewer => {
       return {
         id: interviewer.id,
         name: interviewer.name,

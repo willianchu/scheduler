@@ -24,3 +24,31 @@ export function getInterview (state, interview) {
   }
 }
 
+export function getInterviewersForDay (state, day) {
+  const days = [...state.days]; // copy the array
+  const interviewers = {...state.interviewers}; // copy the object
+   
+  // filter the days array to find the day
+  const dayInterviewers = days.filter(appointment => appointment.name === day);
+  
+  if (dayInterviewers.length === 0) { // if the day is not found
+    return [];
+  }
+  
+  // filter the interviewers object to find the interviewers for the day
+  const interviewersArray = dayInterviewers[0].appointments;
+  
+  if (interviewersArray === undefined) { // if the day has no interviewers
+    return [];
+  }
+  const result = [];
+  for(let element of interviewersArray) {
+    if (interviewers[element] !== undefined) {
+      result.push(interviewers[element]);
+    }
+  }
+  
+  console.log("selectors",result);
+  return result;
+}
+
