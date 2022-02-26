@@ -29,8 +29,8 @@ const defaultAppointments = [
       student: "Archie Andrews",
       interviewer:{
         id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
+        name: "Willian Chu",
+        avatar: "images/admin.jpg",
       }
     }
   },
@@ -52,7 +52,8 @@ const useAxios = () => {
     appointments: defaultAppointments,
     interviewers: []
     });
-  
+  const [error, setError] = useState(null);
+
   const setDay = day => setState( prev => ({...prev, day }));
 // const setDays = days => setState(prev => ({ ...prev, days })); it comes a new one
 // const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
@@ -67,16 +68,21 @@ const third_endpoint = "http://localhost:8001/api/interviewers";
     axios.get(first_endpoint), // get_days
     axios.get(second_endpoint), // get_appointments
     axios.get(third_endpoint) // get_interviewers
-  ]).then((all) => {
+  ])
+  .then((all) => {
+    setError(null);
     const days = all[0].data;
     const appointments = all[1].data;
     const interviewers = all[2].data;
     setAllData([...days], {...appointments}, {...interviewers});
+  })
+  .catch(err => {
+    setError(err.message);
   });
     
 },[]);
 
-return {state, setDay};
+return {state, setDay, error};
 
 };
 

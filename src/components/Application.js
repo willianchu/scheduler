@@ -7,7 +7,7 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-const {state, setDay} = useAxios();
+const {state, setDay, error} = useAxios();
 
 const dailyAppointments = getAppointmentsForDay(state, state.day);
 
