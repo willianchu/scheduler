@@ -7,13 +7,21 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-  const {state, setDay, error} = useAxios(); // data from the server
-  console.log(error); // future error handling
+  const {state, setDay, setAppointments, error} = useAxios(); // data from the server
+  console.log("database",error); // future error handling
 
   const bookInterview = (id, interview) => {
-    const newId = {...id};
-    const newInterview = {...interview};
-    console.log("booked",id, interview);
+    const appointment = { // appointment object to be sent to the server
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    console.log("booked",appointment.id,appointment.interview);
+    const appointments = { // all appointments with the new appointment
+      ...state.appointments,
+      [id]: appointment
+    };
+    setAppointments({...appointments}); // send the new appointment to the server
+   
   }
 
   const save = (name, interviewer, id) => {

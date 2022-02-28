@@ -54,6 +54,7 @@ const useAxios = () => {
     });
   const setDay = day => setState( prev => ({...prev, day }));
   const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
+  const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
 
   useEffect(() => {
     const first_endpoint = "http://localhost:8001/api/days";
@@ -75,7 +76,7 @@ const useAxios = () => {
         setError(err.message);
       });
     },[]);
-    return {state, setDay, error};
+    return {state, setDay, setAppointments, error};
   };
 
 export default useAxios;
