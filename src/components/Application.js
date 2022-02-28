@@ -10,6 +10,21 @@ export default function Application(props) {
   const {state, setDay, error} = useAxios(); // data from the server
   console.log(error); // future error handling
 
+  const bookInterview = (id, interview) => {
+    const newId = {...id};
+    const newInterview = {...interview};
+    console.log("booked",id, interview);
+  }
+
+  const save = (name, interviewer, id) => {
+    const interview = {
+      student: name,
+      interviewer,
+    }; 
+    console.log("save",interview.student,interview.interviewer,id);
+    bookInterview(id,interview);
+  }
+
   const dailyAppointments = getAppointmentsForDay(state, state.day); 
 
   const schedule = dailyAppointments.map((appointment) => {
@@ -22,6 +37,8 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={todaysInterviewers}
+        bookInterview={bookInterview}
+        save={save}
       />
     );
   });

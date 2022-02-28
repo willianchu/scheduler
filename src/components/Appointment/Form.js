@@ -19,10 +19,15 @@ export default function Form(props){
     props.onCancel();
   }
 
+  const submitHandler = (event) => {
+    event.preventDefault();
+    reset();
+  }
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
-        <form autoComplete="off" onSubmit={event => event.preventDefault()}>
+        <form autoComplete="off" onSubmit={submitHandler}>
           <input
             className="appointment__create-input text--semi-bold"
             name="name"
@@ -44,27 +49,9 @@ export default function Form(props){
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onClick={props.onSave}>Save</Button>
+          <Button confirm onClick={()=>props.onSave(student, interviewer, props.id )}>Save</Button>
         </section>
       </section>
     </main>
   );
 };
-
-
-
-// Refactor the hard coded content to use props & state
-
-// The Form component should track the following state:
-
-// student:String
-// interviewer:Number
-// The Form component should have the following actions:
-
-// setStudent:Function
-// setInterviewer:Function
-// The Form component should take the following props:
-
-// student:String
-// interviewers:Array
-// interviewer:Number

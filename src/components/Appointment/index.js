@@ -46,7 +46,7 @@ export default function Appointment(props) {
           {mode === EMPTY && 
             <Empty onAdd={() => transition(CREATE)} />}
           {mode === CREATE && 
-            <Form student="" interviewers={interviewers} onChange={()=>console.log("onChange")} onSave={()=>console.log("onSave")} onCancel={()=>back()}/>}
+            <Form id={props.id} student="" interviewers={interviewers} onChange={()=>console.log("onChange")} onSave={props.save} onCancel={()=>back()}/>}
           {mode === SHOW && (
             <Show student={student} interviewer={interviewer} onEdit={props.onEdit} onDelete={props.onDelete} />)}
         </Fragment>
