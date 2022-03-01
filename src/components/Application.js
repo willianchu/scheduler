@@ -33,6 +33,19 @@ export default function Application(props) {
     bookInterview(id,interview);
   }
 
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    console.log("deleting appointment",appointment.id,appointment.interview);
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setAppointments({...appointments});
+  }
+
   const dailyAppointments = getAppointmentsForDay(state, state.day); 
 
   const schedule = dailyAppointments.map((appointment) => {
@@ -46,6 +59,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={todaysInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
         save={save}
       />
     );
