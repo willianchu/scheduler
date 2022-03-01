@@ -56,10 +56,10 @@ const useAxios = () => {
   const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
   const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
 
+  const first_endpoint = "/api/days";
+  const second_endpoint = "/api/appointments";
+  const third_endpoint = "/api/interviewers";
   useEffect(() => {
-    const first_endpoint = "/api/days";
-    const second_endpoint = "/api/appointments";
-    const third_endpoint = "/api/interviewers";
       Promise.all([
         axios.get(first_endpoint), // get_days
         axios.get(second_endpoint), // get_appointments
@@ -85,10 +85,13 @@ const useAxios = () => {
       axios
         .put(post_endpoint, {interview})
         .then((res) => {
-          console.log("posted",res.data);
+          console.log("posted",res.body);
           setError(null);
-          const appointments = {...res.data};
-          setAppointments({...appointments});
+          axios.get(second_endpoint)
+            .then((res) => {
+              const appointments = res.data;
+              setAppointments(appointments);
+            })
           })
           .catch(err => {
             setError(err.message);
