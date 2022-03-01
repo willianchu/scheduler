@@ -57,9 +57,9 @@ const useAxios = () => {
   const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
 
   useEffect(() => {
-    const first_endpoint = "http://localhost:8001/api/days";
-    const second_endpoint = "http://localhost:8001/api/appointments";
-    const third_endpoint = "http://localhost:8001/api/interviewers";
+    const first_endpoint = "/api/days";
+    const second_endpoint = "/api/appointments";
+    const third_endpoint = "/api/interviewers";
       Promise.all([
         axios.get(first_endpoint), // get_days
         axios.get(second_endpoint), // get_appointments
@@ -80,3 +80,4 @@ const useAxios = () => {
   };
 
 export default useAxios;
+
