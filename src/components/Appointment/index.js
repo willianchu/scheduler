@@ -6,17 +6,19 @@ import Empty from './Empty';
 import Form from './Form';
 import Confirm from './Confirm';
 import useVisualMode from 'hooks/useVisualMode';
+import Status from './Status';
 
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
-  const DELETING = "DELETING";
+  //const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
-  const ERROR_SAVE = "ERROR_SAVE";
-  const ERROR_DELETE = "ERROR_DELETE";
+  //const ERROR_SAVE = "ERROR_SAVE";
+  // const ERROR_DELETE = "ERROR_DELETE";
   const EDIT = "EDIT";
+  
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -45,14 +47,23 @@ export default function Appointment(props) {
     props.cancelInterview(props.id);
     transition(EMPTY);
   }
+    const save = (name, interviewer) => {
+    const interview = {
+      student: name,
+      interviewer,
+    }; 
+    
+    console.log("save",interview.student,interview.interviewer,props.id);
+    props.bookInterview(props.id,interview);
+
+  }
   const createAction = (student, interviewer) => {
     transition(SAVING);
     console.log("create action",props.id);
     console.log("create what you want");
-    props.save(student, interviewer, props.id);
+    save(student, interviewer);
     transition(SHOW);
   }
- 
   
   const editAction = (interviewer) => {
     transition(EDIT);
@@ -80,7 +91,9 @@ export default function Appointment(props) {
           {mode === SHOW && (
             <Show student={student} interviewer={interviewer} onEdit={editAction} onDelete={()=>transition(CONFIRM)} />)}
           {mode === CONFIRM && 
-            <Confirm onConfirm={deleteAction} onCancel={()=>back()} />}
+            <Confirm onConfirm={deleteAction} message="Delete this appointment?" onCancel={()=>back()} />}
+          {mode === SAVING &&
+            <Status message="Saving" />}
         </Fragment>
       );
     };
