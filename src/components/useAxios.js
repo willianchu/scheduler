@@ -76,7 +76,27 @@ const useAxios = () => {
         setError(err.message);
       });
     },[]);
-    return {state, setDay, setAppointments, error};
+
+    function updateAxios(id, data) {
+      const post_endpoint = "/api/appointments/" + id;
+      const interview = {...data}; // copy data
+      console.log("posting",id,{interview});
+
+      axios
+        .put(post_endpoint, {interview})
+        .then((res) => {
+          console.log("posted",res.data);
+          setError(null);
+          const appointments = {...res.data};
+          setAppointments({...appointments});
+          })
+          .catch(err => {
+            setError(err.message);
+          });
+        
+    }
+
+    return {state, setDay, updateAxios, error};
   };
 
 export default useAxios;

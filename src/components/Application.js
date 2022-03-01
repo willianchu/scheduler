@@ -7,7 +7,7 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-  const {state, setDay, setAppointments, error} = useAxios(); // data from the server
+  const {state, setDay, updateAxios, error} = useAxios(); // data from the server
   console.log("database",error); // future error handling
 
   const bookInterview = (id, interview) => {
@@ -16,11 +16,13 @@ export default function Application(props) {
       interview: { ...interview }
     };
     console.log("booked",appointment.id,appointment.interview);
+    updateAxios(appointment.id, appointment.interview);
+    
+    // send the new appointment to the server
     const appointments = { // all appointments with the new appointment
       ...state.appointments,
       [id]: appointment
     };
-    setAppointments({...appointments}); // send the new appointment to the server
    
   }
 
@@ -43,7 +45,7 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setAppointments({...appointments});
+    updateAxios(appointment.id, null); // send the new appointment to the server
   }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day); 
