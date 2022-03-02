@@ -77,12 +77,12 @@ export default function Appointment(props) {
   function destroy(event) {
     transition(DELETING, true);
     props
-     .cancelInterview(props.id)
-     .then(() => transition(EMPTY))
-     .catch(error => {
-       console.log("destroy error",error);
-       transition(ERROR_DELETE, true)
-     });
+     .cancelInterview(props.id, transition)
+    //  .then(() => transition(EMPTY))
+    //  .catch(error => {
+    //    console.log("destroy error",error);
+    //    transition(ERROR_DELETE, true)
+    //  });
    }
 
   if (props.time === undefined) {
