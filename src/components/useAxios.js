@@ -81,20 +81,33 @@ const useAxios = () => {
       });
     },[]);
 
-    function updateAxios(id, data) {
+    function updateAxios(id, data, callback, mode) {
+      let status1 = "";
+      let status2 = "";
       const post_endpoint = "/api/appointments/" + id;
       const interview = {...data}; // copy data
       console.log("useAxios/updateAxios/postingData",id,{interview});
+      if (mode === "DELETING") {
+        status1 = "EMPTY";
+        status2 = "ERROR_DELETE";
+      }
+      if (mode === "BOOKING") {
+        status1 = "SHOW";
+        status2 = "ERROR_SAVE";
+      }
+        
       
       axios
         .put(post_endpoint, {interview})
         .then((res) => {
-          console.log({ posts: res.data });
-          console.log("useAxios/updateAxios/ReturnedPostedBody",res.body);
+          // res.status(204).json({});
+          console.log("useAxios/Server",{res});
           setError(null);
-          return true;
+          callback(status1);
+          return res.body; 
         })
         .catch(err => {
+          callback(status2, true);
           setError(err.message);
           return err;
         });

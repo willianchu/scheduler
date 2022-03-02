@@ -26,30 +26,26 @@ export default function Appointment(props) {
 
   const showAppointment = () => {
   const interview = {...props.interview}; // copy interview object
-  console.log("Index/showAppointment/interview", interview);
   const student = interview.student; // get student name
   const interviewer = {...interview.interviewer}; // copy interviewer object
-  console.log("Index/showAppointment/interviewer", interviewer);
   const interviewersArray = [...props.interviewers]; // copy interviewers array
      // transform interviewers props object to array
-    console.log("Index/showAppointment/interviewersArray",interviewersArray); //custom made list
-    const interviewers = Object.values(interviewersArray).map(interviewer => {
+  const interviewers = Object.values(interviewersArray).map(interviewer => {
       return {
         id: interviewer.id,
         name: interviewer.name,
         avatar: interviewer.avatar
       }
     });
-    console.log("Index/showAppointment/interviewers", interviewers);
+  
   const deleteAction = () => {
     const id = props.id;
     transition(SAVING);
     console.log("Index/deleting action/id",id);
-    props.cancelInterview(id);
-    transition(EMPTY);
-
+    props.cancelInterview(id, transition);
   }
-    const save = (name, interviewer) => {
+
+  const save = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer,
@@ -60,10 +56,15 @@ export default function Appointment(props) {
     transition(SAVING);
     console.log("promise >>>>>>>>>>>>>>>>>");
     
-      props
-        .bookInterview(id, interview)
-        .then((res) => transition(SHOW))
-        .catch(error => transition(ERROR_SAVE, true));
+    props.bookInterview(id, interview, transition)
+        // .then((res) => {
+        //   console.log("promise <<<<<<<<<<<<<<<<<<<", res);
+        //   transition(SHOW);
+        // })
+        // .catch(error => {
+        //   console.log("ERROR updating",error);
+        //   transition(ERROR_SAVE, true)
+        // });
       
   }
  
@@ -78,7 +79,10 @@ export default function Appointment(props) {
     props
      .cancelInterview(props.id)
      .then(() => transition(EMPTY))
-     .catch(error => transition(ERROR_DELETE, true));
+     .catch(error => {
+       console.log("destroy error",error);
+       transition(ERROR_DELETE, true)
+     });
    }
 
   if (props.time === undefined) {

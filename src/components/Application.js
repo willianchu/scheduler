@@ -10,7 +10,7 @@ export default function Application(props) {
   const {state, setDay, setAppointments, updateAxios, saveStatus, error} = useAxios(); // data from the server
   console.log("Application/databaseErrorReturn",error); // future error handling
 
-  const bookInterview = async (id, interview) => {
+ const bookInterview = async (id, interview,callback) => {
     const appointment = { // appointment object to be sent to the server
       ...state.appointments[id],
       interview: { ...interview }
@@ -20,28 +20,66 @@ export default function Application(props) {
       [id]: appointment
     };
     console.log("Application/bookInterview/inputToBook",appointment.id,appointment.interview);
+    setAppointments(appointments); 
+    console.log("done1");
 
-    return await updateAxios(appointment.id, appointment.interview)
-      .then((res) => {
-       setAppointments(appointments);
-       return true;
-      })
-      .catch(error => {
-        console.log("Application/bookInterview/error",error);
-      }
-      );
-   
-        
+    // const data = await 
+    updateAxios(appointment.id, appointment.interview, callback, "BOOKING");
+    // console.log("data",data);
+    // if (data===undefined) {
+    //   callback("SHOW");
+    // } else {
+    //   callback("ERROR_SAVE", true);
+    //   console.log("schedule");
+    // }
+    // return data;
+ 
+
+            
   }
 
-  const cancelInterview = (id) => {
+  // const bookInterview = async (id, interview) => {
+  //   const appointment = { // appointment object to be sent to the server
+  //     ...state.appointments[id],
+  //     interview: { ...interview }
+  //   };
+  //   const appointments = {
+  //     ...state.appointments,
+  //     [id]: appointment
+  //   };
+  //   console.log("Application/bookInterview/inputToBook",appointment.id,appointment.interview);
+
+  //   updateAxios(appointment.id, appointment.interview);
+  //   console.log("done1");
+  //   setAppointments(appointments); 
+  //   console.log("done2");
+            
+  // }
+
+  const cancelInterview = async (id, callback) => {
     const deleteAppointment = {
       ...state.appointments[id],
       interview: {student: "", interviewer: null}
     };
+    const appointments = {
+      ...state.appointments,
+      [id]: deleteAppointment
+    };
     console.log("Application/CancelInterview/deletingAppointmentInput",deleteAppointment.id,deleteAppointment.interview);
 
-    updateAxios(deleteAppointment.id, deleteAppointment.interview); // send the new appointment to the server
+    setAppointments(appointments); 
+    console.log("done1");
+
+  //   const data = await 
+    updateAxios(deleteAppointment.id, deleteAppointment.interview, callback, "DELETING");
+  //   console.log("data",data);
+  //   if (data===undefined) {
+  //     callback("EMPTY");
+  //   } else {
+  //     callback("ERROR_DELETE", true);
+  //   }
+  //   console.log("schedule");
+  //   return data;
   }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day); 

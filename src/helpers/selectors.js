@@ -30,7 +30,6 @@ export function getInterviewersForDay (state, day) {
   const interviewers = {...state.interviewers};
   // filter the days array to find the day
   const dayInterviewers = days.filter(appointment => appointment.name === day);
-  console.log("selector dayInterviewers",dayInterviewers);
   if (dayInterviewers.length === 0) { // if the day is not found
     return [];
   }

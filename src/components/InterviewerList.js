@@ -2,7 +2,7 @@ import React from "react";
 import InterviewerListItem from"components/InterviewerListItem";
 
 export default function InterviewerList(props){
-  console.log("InterviewerList/interviewers >>>>>>>",props.interviewers);
+  
   const copy = [...props.interviewers];
   const data = copy || []; // if undefined, set an empty array
   const interviewers = data.map((interviewer) => {
