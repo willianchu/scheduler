@@ -41,8 +41,8 @@ export default function Appointment(props) {
   const deleteAction = () => {
     const id = props.id;
     transition(SAVING);
-    console.log("Index/deleting action/id",id);
     props.cancelInterview(id, transition);
+
   }
 
   const save = (name, interviewer) => {
@@ -57,15 +57,6 @@ export default function Appointment(props) {
     console.log("promise >>>>>>>>>>>>>>>>>");
     
     props.bookInterview(id, interview, transition)
-        // .then((res) => {
-        //   console.log("promise <<<<<<<<<<<<<<<<<<<", res);
-        //   transition(SHOW);
-        // })
-        // .catch(error => {
-        //   console.log("ERROR updating",error);
-        //   transition(ERROR_SAVE, true)
-        // });
-      
   }
  
   const editAction = (interviewer) => {

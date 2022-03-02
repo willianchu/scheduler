@@ -55,6 +55,7 @@ const useAxios = () => {
 
 
   const setDay = day => setState( prev => ({...prev, day }));
+  const setDays = days => setState( prev => ({...prev, days }));
   const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
   const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
 
@@ -73,6 +74,7 @@ const useAxios = () => {
         const days = all[0].data;
         const appointments = all[1].data;
         const interviewers = all[2].data;
+        updateSpots(days, appointments);
         setAllData([...days], {...appointments}, {...interviewers});
       })
       .catch(err => {
@@ -83,6 +85,7 @@ const useAxios = () => {
     function updateAxios(id, data, callback, mode) {
       let status1 = "";
       let status2 = "";
+      
       const post_endpoint = "/api/appointments/" + id;
       const interview = {...data}; // copy data
       console.log("useAxios/updateAxios/postingData",id,{interview});
@@ -103,6 +106,7 @@ const useAxios = () => {
           console.log("useAxios/Server",{res});
           setError(null);
           callback(status1);
+          
           return res.body; 
         })
         .catch(err => {
@@ -113,8 +117,35 @@ const useAxios = () => {
         
     }
 
-    return {state, setDay, setAppointments, updateAxios};
+    const updateSpots = (refDays, refAppointments) => { //it's a calculate field
+      const days = [...refDays]; // do once case a refresh browser
+      const appointments = {...refAppointments}; //all based on interviews
+      const newSpots = [];
+      let totalNull = 0;
+      for (let element of days) {
+        for (let appoint of element.appointments){
+          if (appointments[appoint].interview === null) {
+            totalNull++;
+          } else if(appointments[appoint].interview.interviewer === null){
+            totalNull++;
+          }
+        }
+          element.spots = totalNull;
+          console.log(element.spots);
+          totalNull = 0;
+          newSpots.push(element);
+      }
+      setDays(newSpots);
+      return newSpots;
+    };
+
+    return {state, setDay, setDays, setAppointments, updateAxios};
   };
 
 export default useAxios;
+
+
+
+
+
 
