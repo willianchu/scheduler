@@ -45,7 +45,6 @@ const defaultAppointments = [
 ];
 
 const useAxios = () => {
-  const [saveStatus, setSaveStatus] = useState("saved");
   const [error, setError] = useState(null);
   const [state, setState] = useState({ // set default state
     day: "Monday",
@@ -114,7 +113,7 @@ const useAxios = () => {
         
     }
 
-    return {state, setDay, setAppointments, updateAxios, saveStatus, error};
+    return {state, setDay, setAppointments, updateAxios};
   };
 
 export default useAxios;
