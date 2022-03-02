@@ -7,32 +7,32 @@ import Form from './Form';
 import Confirm from './Confirm';
 import useVisualMode from 'hooks/useVisualMode';
 import Status from './Status';
+import Error from './Error';
 
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
-  //const DELETING = "DELETING";
+  const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
-  //const ERROR_SAVE = "ERROR_SAVE";
-  // const ERROR_DELETE = "ERROR_DELETE";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
   const EDIT = "EDIT";
   
-
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
   const showAppointment = () => {
   const interview = {...props.interview}; // copy interview object
-  console.log("showAppointment interview", interview.id);
+  console.log("Index/showAppointment/interview", interview);
   const student = interview.student; // get student name
   const interviewer = {...interview.interviewer}; // copy interviewer object
-  console.log("showAppointment interviewer", interviewer.id);
+  console.log("Index/showAppointment/interviewer", interviewer);
   const interviewersArray = [...props.interviewers]; // copy interviewers array
      // transform interviewers props object to array
-    console.log("show",interviewersArray);
+    console.log("Index/showAppointment/interviewersArray",interviewersArray); //custom made list
     const interviewers = Object.values(interviewersArray).map(interviewer => {
       return {
         id: interviewer.id,
@@ -40,37 +40,47 @@ export default function Appointment(props) {
         avatar: interviewer.avatar
       }
     });
+    console.log("Index/showAppointment/interviewers", interviewers);
   const deleteAction = () => {
+    const id = props.id;
     transition(SAVING);
-    console.log("deleting action",props.id);
-    console.log("deleting what you want");
-    props.cancelInterview(props.id);
+    console.log("Index/deleting action/id",id);
+    props.cancelInterview(id);
     transition(EMPTY);
+
   }
     const save = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer,
     }; 
-    
-    console.log("save",interview.student,interview.interviewer,props.id);
-    props.bookInterview(props.id,interview);
+    const id = props.id;
 
-  }
-  const createAction = (student, interviewer) => {
+    console.log("index/save/inputBookInterview 1 2 3",interview.student,interview.interviewer,id);
     transition(SAVING);
-    console.log("create action",props.id);
-    console.log("create what you want");
-    save(student, interviewer);
-    transition(SHOW);
+    console.log("promise >>>>>>>>>>>>>>>>>");
+    
+      props
+        .bookInterview(id, interview)
+        .then((res) => transition(SHOW))
+        .catch(error => transition(ERROR_SAVE, true));
+      
   }
-  
+ 
   const editAction = (interviewer) => {
     transition(EDIT);
-    console.log("edit action",interviewer);
+    console.log("index/edit action",interviewer);
     
 
   }
+  function destroy(event) {
+    transition(DELETING, true);
+    props
+     .cancelInterview(props.id)
+     .then(() => transition(EMPTY))
+     .catch(error => transition(ERROR_DELETE, true));
+   }
+
   if (props.time === undefined) {
     return (
       <Fragment>
@@ -85,15 +95,21 @@ export default function Appointment(props) {
           {mode === EMPTY && 
             <Empty onAdd={() => transition(CREATE)} />}
           {mode === CREATE && 
-            <Form student="" interviewers={interviewers} onChange={()=>console.log("onChange Create")} onSave={createAction} onCancel={()=>back()}/>}
+            <Form student=""  interviewers={interviewersArray} onChange={()=>console.log("onChange Create")} onSave={save} onCancel={()=>back()}/>}
           {mode === EDIT && 
-            <Form student={student} interviewer={interviewer.id} interviewers={interviewers} onChange={()=>console.log("onChange Edit")} onSave={createAction} onCancel={()=>back()}/>}
+            <Form student={student} interviewer={interviewer.id} interviewers={interviewers} onChange={()=>console.log("onChange Edit")} onSave={save} onCancel={()=>back()}/>}
           {mode === SHOW && (
             <Show student={student} interviewer={interviewer} onEdit={editAction} onDelete={()=>transition(CONFIRM)} />)}
           {mode === CONFIRM && 
             <Confirm onConfirm={deleteAction} message="Delete this appointment?" onCancel={()=>back()} />}
           {mode === SAVING &&
             <Status message="Saving" />}
+          {mode === DELETING &&
+            <Status message="Deleting" />}
+          {mode === ERROR_SAVE &&
+            <Error message="Error Saving" onClose={destroy} />}
+          {mode === ERROR_DELETE &&
+            <Error message="Error Deleting" onClose={destroy} />}
         </Fragment>
       );
     };

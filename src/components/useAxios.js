@@ -45,6 +45,7 @@ const defaultAppointments = [
 ];
 
 const useAxios = () => {
+  const [saveStatus, setSaveStatus] = useState("saved");
   const [error, setError] = useState(null);
   const [state, setState] = useState({ // set default state
     day: "Monday",
@@ -52,13 +53,16 @@ const useAxios = () => {
     appointments: defaultAppointments,
     interviewers: []
     });
+
+
   const setDay = day => setState( prev => ({...prev, day }));
-  const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
   const setAppointments = appointments => setState(prev => ({ ...prev, appointments }));
+  const setAllData = (days, appointments, interviewers) => setState(prev => ({ ...prev, days, appointments, interviewers }));
 
   const first_endpoint = "/api/days";
   const second_endpoint = "/api/appointments";
   const third_endpoint = "/api/interviewers";
+  
   useEffect(() => {
       Promise.all([
         axios.get(first_endpoint), // get_days
@@ -80,26 +84,24 @@ const useAxios = () => {
     function updateAxios(id, data) {
       const post_endpoint = "/api/appointments/" + id;
       const interview = {...data}; // copy data
-      console.log("posting",id,{interview});
-
+      console.log("useAxios/updateAxios/postingData",id,{interview});
+      
       axios
         .put(post_endpoint, {interview})
         .then((res) => {
-          console.log("posted",res.body);
+          console.log({ posts: res.data });
+          console.log("useAxios/updateAxios/ReturnedPostedBody",res.body);
           setError(null);
-          axios.get(second_endpoint)
-            .then((res) => {
-              const appointments = res.data;
-              setAppointments(appointments);
-            })
-          })
-          .catch(err => {
-            setError(err.message);
-          });
+          return true;
+        })
+        .catch(err => {
+          setError(err.message);
+          return err;
+        });
         
     }
 
-    return {state, setDay, updateAxios, error};
+    return {state, setDay, setAppointments, updateAxios, saveStatus, error};
   };
 
 export default useAxios;

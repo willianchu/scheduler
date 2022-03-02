@@ -6,36 +6,40 @@ import Appointment from "./Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 export default function Application(props) {
-  const [saveStatus, setSaveStatus] = useState("saved");
-  const {state, setDay, updateAxios, error} = useAxios(); // data from the server
-  console.log("database",error); // future error handling
+  
+  const {state, setDay, setAppointments, updateAxios, saveStatus, error} = useAxios(); // data from the server
+  console.log("Application/databaseErrorReturn",error); // future error handling
 
-  const bookInterview = (id, interview) => {
+  const bookInterview = async (id, interview) => {
     const appointment = { // appointment object to be sent to the server
       ...state.appointments[id],
       interview: { ...interview }
     };
-    console.log("booked",appointment.id,appointment.interview);
-    updateAxios(appointment.id, appointment.interview);  
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    console.log("Application/bookInterview/inputToBook",appointment.id,appointment.interview);
+
+    return await updateAxios(appointment.id, appointment.interview)
+      .then((res) => {
+       setAppointments(appointments);
+       return true;
+      })
+      .catch(error => {
+        console.log("Application/bookInterview/error",error);
+      }
+      );
+   
+        
   }
-
-  // const save = (name, interviewer, id) => {
-  //   const interview = {
-  //     student: name,
-  //     interviewer,
-  //   }; 
-  //   setSaveStatus("saving");
-  //   console.log("save",interview.student,interview.interviewer,id);
-  //   bookInterview(id,interview);
-
-  // }
 
   const cancelInterview = (id) => {
     const deleteAppointment = {
       ...state.appointments[id],
       interview: {student: "", interviewer: null}
     };
-    console.log("deleting appointment",deleteAppointment.id,deleteAppointment.interview);
+    console.log("Application/CancelInterview/deletingAppointmentInput",deleteAppointment.id,deleteAppointment.interview);
 
     updateAxios(deleteAppointment.id, deleteAppointment.interview); // send the new appointment to the server
   }
@@ -54,7 +58,7 @@ export default function Application(props) {
         interviewers={todaysInterviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-        // save={save}
+        save={saveStatus}
       />
     );
   });

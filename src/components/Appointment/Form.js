@@ -8,7 +8,9 @@ import Button from "components/Button";
 export default function Form(props){
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  console.log("interviewer",interviewer);
+  const interviewers = [...props.interviewers];
+  console.log("Form/student interviewer interviewers 1 2 3",student, interviewer, interviewers);
+
   const reset = () => {
     setStudent("");
     setInterviewer(null);
@@ -41,7 +43,7 @@ export default function Form(props){
         </form>
         <InterviewerList 
           /* your code goes here */
-          interviewers={props.interviewers}
+          interviewers={interviewers}
           value={interviewer}
           onChange={setInterviewer}
         />
