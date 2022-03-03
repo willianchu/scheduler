@@ -27,41 +27,36 @@ const useApplicationData = () => {
       } 
       newSpots.push(element);
     }
-    
-
-    console.log("useApplicationData/setSpot",{newSpots});
+ 
     setDays(newSpots);
-    return newSpots;
   };
 
-  const bookInterview = async (id, interview,callback) => {
+  const bookInterview = (_id, _interview, callback) => {
     const appointment = { // appointment object to be sent to the server
-      ...state.appointments[id],
-      interview: { ...interview }
+      ...state.appointments[_id],
+      interview: { ..._interview }
     };
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [_id]: appointment
     };
-    console.log("Application/bookInterview/inputToBook",appointment.id,appointment.interview);
-    setAppointments(appointments); 
-    console.log("done1");
     
-    console.log("input of setSpot",state.days, state.appointments, state.day);
+    setAppointments(appointments); 
+        
     setSpot(state.days, appointments, state.day); 
     
     updateAxios(appointment.id, appointment.interview, callback, "BOOKING");
     
   }
   
-  const cancelInterview = async (id, callback) => {
+  const cancelInterview = async (_id, callback) => {
     const deleteAppointment = {
-      ...state.appointments[id],
+      ...state.appointments[_id],
       interview: {student: "", interviewer: null}
     };
     const deleteAppointments = {
       ...state.appointments,
-      [id]: deleteAppointment
+      [_id]: deleteAppointment
     };
     setAppointments(deleteAppointments);
     setSpot(state.days, deleteAppointments, state.day);  

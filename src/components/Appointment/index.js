@@ -1,25 +1,26 @@
-import React, { Fragment } from 'react';
 import './styles.scss';
-import Header from './Header';
+import React, { Fragment } from 'react';
 import Show from './Show';
-import Empty from './Empty';
 import Form from './Form';
+import Error from './Error';
+import Empty from './Empty';
+import Status from './Status';
+import Header from './Header';
 import Confirm from './Confirm';
 import useVisualMode from 'hooks/useVisualMode';
-import Status from './Status';
-import Error from './Error';
 
 export default function Appointment(props) {
-  const EMPTY = "EMPTY";
+  const EDIT = "EDIT";
   const SHOW = "SHOW";
-  const CREATE = "CREATE";
+  const EMPTY = "EMPTY";
   const SAVING = "SAVING";
-  const DELETING = "DELETING";
+  const CREATE = "CREATE";
   const CONFIRM = "CONFIRM";
+  const DELETING = "DELETING";
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
-  const EDIT = "EDIT";
   
+  console.log("interview",props.appointment, "flag", props.interview);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -30,8 +31,9 @@ export default function Appointment(props) {
   const interviewer = {...interview.interviewer}; // copy interviewer object
   const interviewersArray = [...props.interviewers]; // copy interviewers array
      // transform interviewers props object to array
+  
   const interviewers = Object.values(interviewersArray).map(interviewer => {
-      return {
+      return interviewer === undefined ? null : {
         id: interviewer.id,
         name: interviewer.name,
         avatar: interviewer.avatar
@@ -52,10 +54,8 @@ export default function Appointment(props) {
     }; 
     const id = props.id;
 
-    console.log("index/save/inputBookInterview 1 2 3",interview.student,interview.interviewer,id);
     transition(SAVING);
-    console.log("promise >>>>>>>>>>>>>>>>>");
-    
+    console.log("SAVING", interview);
     props.bookInterview(id, interview, transition)
   }
  
@@ -65,15 +65,12 @@ export default function Appointment(props) {
     
 
   }
+
   function destroy(event) {
     transition(DELETING, true);
     props
      .cancelInterview(props.id, transition)
-    //  .then(() => transition(EMPTY))
-    //  .catch(error => {
-    //    console.log("destroy error",error);
-    //    transition(ERROR_DELETE, true)
-    //  });
+
    }
 
   if (props.time === undefined) {

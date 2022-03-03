@@ -1,9 +1,9 @@
-import React, {Fragment } from "react";
 import "components/Application.scss";
+import React, {Fragment } from "react";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 export default function Application(props) {
 
@@ -14,6 +14,7 @@ export default function Application(props) {
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const todaysInterviewers = getInterviewersForDay (state, state.day);
+    
     return (
       <Appointment
         key={appointment.id}

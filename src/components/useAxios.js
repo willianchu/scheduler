@@ -118,8 +118,8 @@ const useAxios = () => {
     }
 
     const updateSpots = (refDays, refAppointments) => { //it's a calculate field
-      const days = [...refDays]; // do once case a refresh browser
-      const appointments = {...refAppointments}; //all based on interviews
+      const days = [...refDays]; // do once [] case a refresh browser 
+      const appointments = {...refAppointments}; //updated based on interviews
       const newSpots = [];
       let totalNull = 0;
       for (let element of days) {
@@ -139,7 +139,7 @@ const useAxios = () => {
       return newSpots;
     };
 
-    return {state, setDay, setDays, setAppointments, updateAxios};
+    return {state, setDay, setDays, setAppointments, updateAxios, error};
   };
 
 export default useAxios;
