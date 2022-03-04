@@ -33,10 +33,12 @@ export function getInterviewersForDay (_state, _day) {
   const interviewers = {..._state.interviewers};
   // filter the days array to find the day
   const dayInterviewers = days.filter(singleDay => singleDay.name === _day);
+  if(days.length === 0 || dayInterviewers.length === 0) { // if the day is not found
+    return [];  
+  }
    
   // filter the interviewers object to find the interviewers for the day
   const interviewersArray = dayInterviewers[0].interviewers;
-  
   const result = [];
   for(let element of interviewersArray) {
     result.push(interviewers[element]);
