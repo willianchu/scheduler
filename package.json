@@ -47,7 +47,8 @@
     "@testing-library/react": "^8.0.7",
     "babel-loader": "^8.0.5",
     "cypress": "^9.5.1",
-    "node-sass": "^4.14.0"
+    "node-sass": "^4.14.0",
+    "prop-types": "^15.8.1"
   },
   "jest": {
     "watchPathIgnorePatterns": [
