@@ -15,19 +15,15 @@ const useApplicationData = () => {
     for (let element of days) {
       if (element.name === currentDay) {
          for (let appoint of element.appointments){
-          if (appointments[appoint].interview === null) {
-             totalNull++;
-          } else if(appointments[appoint].interview.interviewer === null){
+          if (appointments[appoint].interview === null || appointments[appoint].interview.interviewer === null){ // if the appointment is empty or cancelled
               totalNull++;
           }
          }
         element.spots = totalNull;
-          
         totalNull = 0;
       } 
       newSpots.push(element);
     }
- 
     setDays(newSpots);
   };
 

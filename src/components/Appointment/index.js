@@ -52,7 +52,6 @@ export default function Appointment(props) {
       interviewer,
     }; 
     const id = props.id;
-
     transition(SAVING);
     props.bookInterview(id, interview, transition)
   }
