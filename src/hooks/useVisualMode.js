@@ -6,7 +6,7 @@ export default function useVisualMode(initial) {
 
   function transition(newMode, replace = false) {
     if (replace) {
-      setHistory(prevHistory => [newMode, ...prevHistory.slice(1)]);
+      setHistory(prevHistory => [...prevHistory.slice(0,-1), newMode]); // replace the last element
     } else {
       setHistory(prevHistory => [...prevHistory, newMode]);
     }
@@ -14,7 +14,8 @@ export default function useVisualMode(initial) {
   }
 
   function back() {
-    if (history.length > 1) {
+
+    if (history.length >= 1) {
       const prevHistory = history;
       setHistory(prevHistory.slice(0, -1));
       setMode(prevHistory[prevHistory.length - 2]); // this is still the old history before de slice that's why -2

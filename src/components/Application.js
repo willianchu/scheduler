@@ -10,14 +10,12 @@ export default function Application(props) {
   const { bookInterview, cancelInterview, state, setDay } = useApplicationData(); 
 
   if (state.appointments[1]===undefined) {
-    console.log("loading...");
+    console.log("loading..."); // prevent the page from loading before the data is loaded
     return <p>Loading data from the server...</p>
   
   } else {
-  
-  const dailyAppointments = getAppointmentsForDay(state, state.day); 
-  console.log("dailyAppointments", dailyAppointments);
-  const schedule = dailyAppointments.map((appointment) => {
+    const dailyAppointments = getAppointmentsForDay(state, state.day); 
+    const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const todaysInterviewers = getInterviewersForDay (state, state.day);
     
@@ -69,5 +67,5 @@ export default function Application(props) {
       </section>
     </main>
   );
-}
+  }
 }

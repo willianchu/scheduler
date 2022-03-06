@@ -82,7 +82,7 @@ const useAxios = () => {
       });
     },[]);
 
-    function updateAxios(id, data, callback, mode) {
+    function updateAxios(id, data, callback, mode, updateData, updateSpots) {
       let status1 = "";
       let status2 = "";
       
@@ -97,15 +97,20 @@ const useAxios = () => {
         status1 = "SHOW";
         status2 = "ERROR_SAVE";
       }
+      if (mode === "SAVING") {
+        status1 = "SHOW";
+        status2 = "ERROR_SAVE";
+      }
         
       
       axios
         .put(post_endpoint, {interview})
         .then((res) => {
           // res.status(204).json({});
-          console.log("useAxios/Server",{res});
+          updateData();
+          updateSpots();
           setError(null);
-          callback(status1);
+          callback(status1, true);
           
           return res.body; 
         })
@@ -131,7 +136,6 @@ const useAxios = () => {
           }
         }
           element.spots = totalNull;
-          console.log(element.spots);
           totalNull = 0;
           newSpots.push(element);
       }

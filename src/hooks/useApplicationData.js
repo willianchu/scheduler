@@ -5,7 +5,7 @@ const useApplicationData = () => {
   const {state, setDay, setDays, setAppointments, updateAxios} = useAxios(); // data from the server
 
 
-  const setSpot = (refDays, refAppointments, refDay) => {
+  const setSpot = (refDays, refAppointments, refDay) => { // count and set the spots of the day
     const days = [...refDays];
     const appointments = {...refAppointments};
     const currentDay = refDay;
@@ -31,37 +31,33 @@ const useApplicationData = () => {
     setDays(newSpots);
   };
 
+  // books an interview and setting the next "transition" in the stack
   const bookInterview = (_id, _interview, callback) => {
-    const appointment = { // appointment object to be sent to the server
+    const appointment = {  // preparing the new appointment to be sent to the server
       ...state.appointments[_id],
       interview: { ..._interview }
     };
-    const appointments = {
+    const appointments = { // preparing the new appointment to be set in memory
       ...state.appointments,
       [_id]: appointment
     };
-    
-    setAppointments(appointments); 
-        
-    setSpot(state.days, appointments, state.day); 
-    
-    updateAxios(appointment.id, appointment.interview, callback, "BOOKING");
+    // direct database update request     
+    updateAxios(appointment.id, appointment.interview, callback, "BOOKING",()=>setAppointments(appointments),()=>setSpot(state.days, appointments, state.day));
     
   }
   
-  const cancelInterview = async (_id, callback) => {
-    const deleteAppointment = {
+  // cancels an interview and setting the next "transition" in the stack
+  const cancelInterview = async (_id, callback, mode) => {
+    const deleteAppointment = { // preparing the new appointment to be sent to the server
       ...state.appointments[_id],
       interview: {student: "", interviewer: null}
     };
-    const deleteAppointments = {
+    const deleteAppointments = { // preparing the new appointment to be set in memory
       ...state.appointments,
       [_id]: deleteAppointment
     };
-    setAppointments(deleteAppointments);
-    setSpot(state.days, deleteAppointments, state.day);  
-    
-    updateAxios(deleteAppointment.id, deleteAppointment.interview, callback, "DELETING");
+    // direct database update request     
+    updateAxios(deleteAppointment.id, deleteAppointment.interview, callback, mode,()=>setAppointments(deleteAppointments),()=>setSpot(state.days, deleteAppointments, state.day));
     
   }
 

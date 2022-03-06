@@ -20,7 +20,6 @@ export default function Appointment(props) {
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
   
-  console.log("interview",props.appointment, "flag", props.interview);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -42,8 +41,8 @@ export default function Appointment(props) {
   
   const deleteAction = () => {
     const id = props.id;
-    transition(SAVING);
-    props.cancelInterview(id, transition);
+    transition(DELETING);
+    props.cancelInterview(id, transition, DELETING);
 
   }
 
@@ -55,24 +54,17 @@ export default function Appointment(props) {
     const id = props.id;
 
     transition(SAVING);
-    console.log("SAVING", interview);
     props.bookInterview(id, interview, transition)
   }
  
   const editAction = (interviewer) => {
     transition(EDIT);
-    console.log("index/edit action",interviewer);
-    
-
   }
 
   function destroy(event) {
-    transition(DELETING, true);
-    props
-     .cancelInterview(props.id, transition)
-
+    back();
    }
-
+  
   if (props.time === undefined) {
     return (
       <Fragment>
