@@ -29,9 +29,9 @@ export default function Appointment(props) {
   const student = interview.student; // get student name
   const interviewer = {...interview.interviewer} || []; // copy interviewer object
   const interviewersArray = [...props.interviewers]; // copy interviewers array
-     // transform interviewers props object to array
-  
-  const interviewers = Object.values(interviewersArray).map(interviewer => {
+
+  // transform interviewers props object to array
+  const interviewers = Object.values(interviewersArray).map(interviewer => { 
       return interviewer === undefined ? null : {
         id: interviewer.id,
         name: interviewer.name,
@@ -39,14 +39,13 @@ export default function Appointment(props) {
       }
     });
   
-  const deleteAction = () => {
+  const deleteAction = () => { // delete action on click
     const id = props.id;
     transition(DELETING);
     props.cancelInterview(id, transition, DELETING);
-
   }
 
-  const save = (name, interviewer) => {
+  const save = (name, interviewer) => { // save action on click
     const interview = {
       student: name,
       interviewer,
@@ -56,15 +55,15 @@ export default function Appointment(props) {
     props.bookInterview(id, interview, transition)
   }
  
-  const editAction = (interviewer) => {
+  const editAction = (interviewer) => { // edit action on click
     transition(EDIT);
   }
 
-  function destroy(event) {
+  function destroy(event) { // back to original mode action on click
     back();
    }
   
-  if (props.time === undefined) {
+  if (props.time === undefined) { // if no time is selected
     return (
       <Fragment>
         <Header time="No Appointments" />
@@ -97,7 +96,6 @@ export default function Appointment(props) {
       );
     };
 };
-
 
 return (
   <article className="appointment">

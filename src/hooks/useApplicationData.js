@@ -4,11 +4,11 @@ const useApplicationData = () => {
 
   const {state, setDay, setDays, setAppointments, updateAxios} = useAxios(); // data from the server
 
-
-  const setSpot = (refDays, refAppointments, refDay) => { // count and set the spots of the day
-    const days = [...refDays];
-    const appointments = {...refAppointments};
-    const currentDay = refDay;
+  // set spot helper function to update spots in memory every time a new interview is added, cancelled or deleted
+  const setSpot = (_days, _appointments, _day) => { // count and set the spots of the day
+    const days = [..._days];
+    const appointments = {..._appointments};
+    const currentDay = _day;
     const newSpots = [];
 
     let totalNull = 0;
