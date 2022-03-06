@@ -49,8 +49,8 @@ const useAxios = () => {
   const [state, setState] = useState({ // set default state
     day: "Monday",
     days: [],
-    appointments: defaultAppointments,
-    interviewers: []
+    appointments: {},
+    interviewers: {}
     });
 
 

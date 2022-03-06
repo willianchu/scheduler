@@ -28,7 +28,7 @@ export default function Appointment(props) {
   const showAppointment = () => {
   const interview = {...props.interview}; // copy interview object
   const student = interview.student; // get student name
-  const interviewer = {...interview.interviewer}; // copy interviewer object
+  const interviewer = {...interview.interviewer} || []; // copy interviewer object
   const interviewersArray = [...props.interviewers]; // copy interviewers array
      // transform interviewers props object to array
   

@@ -7,10 +7,16 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-  const { bookInterview, cancelInterview, state, setDay } = useApplicationData(); // data from the server
+  const { bookInterview, cancelInterview, state, setDay } = useApplicationData(); 
 
+  if (state.appointments[1]===undefined) {
+    console.log("loading...");
+    return <p>Loading data from the server...</p>
+  
+  } else {
+  
   const dailyAppointments = getAppointmentsForDay(state, state.day); 
-
+  console.log("dailyAppointments", dailyAppointments);
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const todaysInterviewers = getInterviewersForDay (state, state.day);
@@ -63,4 +69,5 @@ export default function Application(props) {
       </section>
     </main>
   );
+}
 }
