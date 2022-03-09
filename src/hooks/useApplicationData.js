@@ -1,4 +1,4 @@
-import useAxios from "../components/useAxios";
+import useAxios from "./useAxios";
 
 const useApplicationData = () => {
 
