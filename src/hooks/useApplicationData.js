@@ -2,7 +2,7 @@ import useAxios from "./useAxios";
 
 const useApplicationData = () => {
 
-  const {state, setDay, setDays, setAppointments, updateAxios} = useAxios(); // data from the server
+  const {state, setDay, setDays, setAppointments, updateAxios, dataLoaded, setDataLoaded} = useAxios(); // data from the server
 
   // set spot helper function to update spots in memory every time a new interview is added, cancelled or deleted
   const setSpot = (_days, _appointments, _day) => { // count and set the spots of the day
@@ -57,7 +57,29 @@ const useApplicationData = () => {
     
   }
 
-  return { bookInterview, cancelInterview, state, setDay };
+  const updateSpotsFirstTime = (refDays, refAppointments) => { //it's a calculate field
+    const days = [...refDays]; // do once [] case a refresh browser 
+    const appointments = {...refAppointments}; //updated based on interviews
+    const newSpots = [];
+    let totalNull = 0;
+    for (let element of days) {
+      for (let appoint of element.appointments){
+        if (appointments[appoint].interview === null) {
+          totalNull++;
+        } else if(appointments[appoint].interview.interviewer === null){
+          totalNull++;
+        }
+      }
+        element.spots = totalNull;
+        totalNull = 0;
+        newSpots.push(element);
+    }
+    setDays(newSpots);
+    setDataLoaded(false)
+    return newSpots;
+  };
+
+  return { bookInterview, cancelInterview, state, setDay, dataLoaded, updateSpotsFirstTime };
 
 };
 

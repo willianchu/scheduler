@@ -7,7 +7,7 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
 
-  const { bookInterview, cancelInterview, state, setDay } = useApplicationData(); 
+  const { bookInterview, cancelInterview, state, setDay, dataLoaded, updateSpotsFirstTime } = useApplicationData(); 
 
   if (state.appointments[1]===undefined) {
     console.log("loading..."); // prevent the page from loading before the data is loaded
@@ -18,7 +18,9 @@ export default function Application(props) {
     const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const todaysInterviewers = getInterviewersForDay (state, state.day);
-    
+    if (dataLoaded) {
+      updateSpotsFirstTime(state.days, state.appointments);
+    }
     return (
       <Appointment
         key={appointment.id}

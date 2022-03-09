@@ -3,7 +3,8 @@ import axios from "axios";
 
 const useAxios = () => {
   const [error, setError] = useState(null);
-  const [state, setState] = useState({ // set default state
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [state, setState] = useState({ 
     day: "Monday",
     days: [],
     appointments: {},
@@ -27,13 +28,14 @@ const useAxios = () => {
       ])
       .then((all) => {
         setError(null);
+        setDataLoaded(true);
         const days = all[0].data;
         const appointments = all[1].data;
-        const interviewers = all[2].data;
-        updateSpotsFirstTime(days, appointments);
+        const interviewers = all[2].data;        
         setAllData([...days], {...appointments}, {...interviewers});
       })
       .catch(err => {
+        setDataLoaded(false);
         setError(err.message);
       });
     },[]);
@@ -79,28 +81,9 @@ const useAxios = () => {
         
     }
 
-    const updateSpotsFirstTime = (refDays, refAppointments) => { //it's a calculate field
-      const days = [...refDays]; // do once [] case a refresh browser 
-      const appointments = {...refAppointments}; //updated based on interviews
-      const newSpots = [];
-      let totalNull = 0;
-      for (let element of days) {
-        for (let appoint of element.appointments){
-          if (appointments[appoint].interview === null) {
-            totalNull++;
-          } else if(appointments[appoint].interview.interviewer === null){
-            totalNull++;
-          }
-        }
-          element.spots = totalNull;
-          totalNull = 0;
-          newSpots.push(element);
-      }
-      setDays(newSpots);
-      return newSpots;
-    };
+    
 
-    return {state, setDay, setDays, setAppointments, updateAxios, error};
+    return {state, setDay, setDays, setAppointments, updateAxios, error, dataLoaded, setDataLoaded};
   };
 
 export default useAxios;
