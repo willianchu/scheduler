@@ -19,72 +19,61 @@ const useAxios = () => {
   const endpointDays = "/api/days";
   const endpointAppointments = "/api/appointments";
   const endpointInterviewers = "/api/interviewers";
-  
+
   useEffect(() => {
-      Promise.all([
-        axios.get(endpointDays), // get_days
-        axios.get(endpointAppointments), // get_appointments
-        axios.get(endpointInterviewers) // get_interviewers
-      ])
-      .then((all) => {
+    Promise.all([
+      axios.get(endpointDays), // get_days
+      axios.get(endpointAppointments), // get_appointments
+      axios.get(endpointInterviewers) // get_interviewers
+    ])
+    .then((all) => {
+      setError(null);
+      setDataLoaded(true);
+      const days = all[0].data;
+      const appointments = all[1].data;
+      const interviewers = all[2].data;        
+      setAllData([...days], {...appointments}, {...interviewers});
+    })
+    .catch(err => {
+      setDataLoaded(false);
+      setError(err.message);
+    });
+  },[]);
+
+  function updateAxios(id, data, setStackMode, currentMode, updateMemoryData, updateMemorySpots) {
+    let modeIfSuccess = "";
+    let modeIfFail = "";
+    const endpointPost = "/api/appointments/" + id;
+    const interview = {...data}; 
+    if (currentMode === "DELETING") {
+      modeIfSuccess = "EMPTY";
+      modeIfFail = "ERROR_DELETE";
+    }
+    if (currentMode === "BOOKING") {
+      modeIfSuccess = "SHOW";
+      modeIfFail = "ERROR_SAVE";
+    }
+    if (currentMode === "SAVING") {
+      modeIfSuccess = "SHOW";
+      modeIfFail = "ERROR_SAVE";
+    }
+    axios
+      .put(endpointPost, {interview}) 
+      .then((res) => {
+        updateMemoryData(); 
+        updateMemorySpots(); 
         setError(null);
-        setDataLoaded(true);
-        const days = all[0].data;
-        const appointments = all[1].data;
-        const interviewers = all[2].data;        
-        setAllData([...days], {...appointments}, {...interviewers});
+        setStackMode(modeIfSuccess, true); 
+        return res.body; 
       })
       .catch(err => {
-        setDataLoaded(false);
+        setStackMode(modeIfFail, true); 
         setError(err.message);
+        return err;
       });
-    },[]);
-
-    function updateAxios(id, data, setStackMode, currentMode, updateMemoryData, updateMemorySpots) {
-      let modeIfSuccess = "";
-      let modeIfFail = "";
-      
-      const endpointPost = "/api/appointments/" + id;
-      const interview = {...data}; // copy data
-      console.log("useAxios/updateAxios/postingData",id,{interview});
-      if (currentMode === "DELETING") {
-        modeIfSuccess = "EMPTY";
-        modeIfFail = "ERROR_DELETE";
-      }
-      if (currentMode === "BOOKING") {
-        modeIfSuccess = "SHOW";
-        modeIfFail = "ERROR_SAVE";
-      }
-      if (currentMode === "SAVING") {
-        modeIfSuccess = "SHOW";
-        modeIfFail = "ERROR_SAVE";
-      }
-        
-      
-      axios
-        .put(endpointPost, {interview}) // update permanently in server
-        .then((res) => {
-          // res.status(204).json({});
-          updateMemoryData(); // if success, update memory data
-          updateMemorySpots();  // if success, update memory spots
-          setError(null);
-          setStackMode(modeIfSuccess, true); // update new mode in stack replacing 
-          
-          return res.body; 
-        })
-        .catch(err => {
-          setStackMode(modeIfFail, true); // update new mode in stack replacing 
-
-          setError(err.message);
-          return err;
-        });
-        
-    }
-
-    
-
+  }
     return {state, setDay, setDays, setAppointments, updateAxios, error, dataLoaded, setDataLoaded};
-  };
+};
 
 export default useAxios;
 

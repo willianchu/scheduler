@@ -12,7 +12,6 @@ export default function Application(props) {
   if (state.appointments[1]===undefined) {
     console.log("loading..."); // prevent the page from loading before the data is loaded
     return <p>Loading data from the server...</p>
-  
   } else {
     const dailyAppointments = getAppointmentsForDay(state, state.day); 
     const schedule = dailyAppointments.map((appointment) => {
