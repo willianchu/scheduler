@@ -29,11 +29,6 @@ Instructions on how to use them in your own application are linked below.
 4. Start the web server using the `npm start` command. The app will be served at <http://localhost:8000/>.
 
 ## Known Issues
-After splitting the code into multiple files, the Axios library is taking too long to load, generating many blanks objects instances.
-* This causes a first page with "ghost" elements or un match counter for example.
-It will work properly after switching to another day and clicking back on the "Monday" again.
-* There is another issue that was explained in the lecture. If you save the interview schedule, without selecting a interviewer, the database will degrade.
-the tables are normalized and dependent of id's.
-* Once at several inputs and deleting maybe occur a blank label after a prolonged time saving. 
+ 
 
 
