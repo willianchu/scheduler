@@ -50,8 +50,9 @@ export default function Form(props){
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
-          { student==="" ? <Button confirm onClick={()=>setPlaceH(true)}>Save</Button> : <Button confirm onClick={()=>props.onSave(student,interviewer)}>Save</Button> }
-          { placeH===true ? <p className="appointment__validation-message">/student name cannot be blank/i</p> : null }
+          { student==="" || interviewer===null ? <Button confirm onClick={()=>setPlaceH(true)}>Save</Button> : <Button confirm onClick={()=>props.onSave(student,interviewer)}>Save</Button> }
+          { placeH===true && student==="" ? <p className="appointment__validation-message">student name cannot be blank!!</p> : null }
+          { placeH===true && interviewer===null ? <p className="appointment__validation-message">must assign an interviewer!!</p> : null }
         </section>
       </section>
     </main>
