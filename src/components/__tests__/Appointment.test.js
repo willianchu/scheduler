@@ -19,17 +19,14 @@ import Appointment from '../Appointment'; // =<^;^>=
   A test that renders a React Component
 */
 describe("Appointment", () => {
-  xit("renders without crashing", () => {
+  it("renders without crashing", () => {
     render(<Appointment />);
   });
 
-  xit("does something it is supposed to do", () => {
+  it("does something it is supposed to do", () => {
     const { getByText } = render(<Appointment />);
-    expect(getByText("Confirm")).toHaveClass("button--confirm");
+    expect(getByText("No Appointments"));
   });
 
-  xit("does something else it is supposed to do", () => {
-    const { getByText } = render(<Appointment />);
-    expect(getByText("Confirm")).toHaveClass("button--confirm");
-  });
+
 });
