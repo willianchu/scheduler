@@ -42,7 +42,7 @@ export function getInterviewersForDay (_state, _day) {
   const result = [];
   for(let element of interviewersArray) {
     result.push(interviewers[element]);
-    }
+  }
   
   return result;
 }
