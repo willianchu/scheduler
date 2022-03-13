@@ -41,7 +41,7 @@ export default function Appointment(props) {
   
   const deleteAction = () => { // delete action on click
     const id = props.id;
-    transition(DELETING);
+    transition(DELETING, true);
     props.cancelInterview(id, transition, DELETING);
   }
 
