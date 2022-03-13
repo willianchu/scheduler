@@ -30,7 +30,7 @@ Instructions on how to use them in your own application are linked below.
 | useState | [https://reactjs.org/docs/hooks-state.html] |
 | useEffect | [https://reactjs.org/docs/hooks-reference.html#useeffect] |
 
-Scheduler is open source itself too! with a [public repository][willianchu]
+Scheduler is open source itself too! with a [https://github.com/willianchu/scheduler][willianchu]
  on GitHub.
 
 ## Getting Started
@@ -41,7 +41,8 @@ Scheduler is open source itself too! with a [public repository][willianchu]
 3. Install dependencies using the `npm install` command.
 4. Start the web server using the `npm start` command. The app will be served at <http://localhost:8000/>.
 
-## Known Issues
+Note*: Before you can use Scheduler, you need to install and run the scheduler database-api [https://github.com/willianchu/scheduler-api] running in a second terminal.
+
  
 
 
