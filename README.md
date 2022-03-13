@@ -17,8 +17,21 @@ Schedule is an React front end single page web application built with modern pra
 
 ## Dependencies
 
-Actually there are several dependencies of open source projects to work properly.
+Scheduler has actually several dependencies of open source projects to work properly.
 Instructions on how to use them in your own application are linked below.
+
+| Dependecies | README |
+| ------ | ------ |
+| Postgresql| [https://www.postgresql.org/] |
+| Axios| [https://axios-http.com/] |
+| UseVisualMode | [https://github.com/christopherdegroot/useVisualMode-Visualizer/tree/master/visual-mode] |
+| React | [https://reactjs.org/] |
+| Fragment | [https://reactjs.org/docs/fragments.html] |
+| useState | [https://reactjs.org/docs/hooks-state.html] |
+| useEffect | [https://reactjs.org/docs/hooks-reference.html#useeffect] |
+
+Scheduler is open source itself too! with a [public repository][willianchu]
+ on GitHub.
 
 ## Getting Started
 
